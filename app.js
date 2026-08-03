@@ -57,13 +57,15 @@ async function loadData() {
     let response = staticSite
       ? await fetch(`movimientos.json?at=${Date.now()}`, { cache: "no-store" })
       : await fetch(`/api/movimientos.json?at=${Date.now()}`, { cache: "no-store" });
-    let data;
-    if (!response.ok && !staticSite) {
-      // En la versión publicada como HTML estático se usa este archivo.
+    let contentType = response.headers.get("content-type") || "";
+    if ((!response.ok || !contentType.includes("application/json")) && !staticSite) {
+      // Los hosts estaticos pueden responder con index.html para rutas de API inexistentes.
       response = await fetch(`movimientos.json?at=${Date.now()}`, { cache: "no-store" });
+      contentType = response.headers.get("content-type") || "";
     }
-    data = await response.json();
-    if (!response.ok) throw new Error(data.error || "No se encontraron datos publicados.");
+    if (!response.ok) throw new Error("No se encontraron datos publicados.");
+    if (!contentType.includes("application/json")) throw new Error("El servidor no entrego el archivo de datos JSON.");
+    const data = await response.json();
     state.rows = Array.isArray(data.movimientos) ? data.movimientos : [];
     populateSelects(); applyFilters();
     const updated = data.actualizado ? new Date(data.actualizado) : null;
@@ -73,7 +75,7 @@ async function loadData() {
       : "Fecha no disponible";
     if (validUpdated) $("#lastUpdated").dateTime = updated.toISOString();
   } catch (error) {
-    $("#recordDescription").textContent = `No fue posible leer el Excel: ${error.message}`;
+    $("#recordDescription").textContent = `No fue posible cargar los datos: ${error.message}`;
     $("#lastUpdated").textContent = "Sin conexión con los datos";
   } finally { button.disabled = false; button.textContent = "↻ Actualizar datos"; }
 }
