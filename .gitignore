@@ -1,0 +1,5 @@
+*.xlsm
+config/
+logs/
+.venv/
+tools/

@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Control de Tapas | Movimientos</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-theme="light">
+    <main class="page-shell">
+      <header class="hero">
+        <div>
+          <p class="eyebrow"><span class="live-dot"></span> ¡INVENTARIO EN MARCHA!</p>
+          <h1>Control de <em>tapas</em><span class="fruit">🍊</span></h1>
+          <p class="subtitle">Movimientos consolidados desde <strong>TAPAS.xlsm</strong></p>
+        </div>
+        <div class="hero-actions">
+          <div class="update-status" aria-live="polite">
+            <span class="sync-dot"></span>
+            <span><small>ÚLTIMA ACTUALIZACIÓN</small><time id="lastUpdated">Cargando datos…</time></span>
+          </div>
+          <button class="theme-toggle" id="themeButton" aria-label="Activar modo oscuro" title="Cambiar tema"><span>☀</span><span>☾</span><i></i></button>
+          <button class="button secondary" id="advancedButton">⌕ Búsqueda avanzada</button>
+          <button class="button primary" id="refreshButton">↻ Actualizar datos</button>
+        </div>
+      </header>
+
+      <section class="summary" aria-label="Resumen">
+        <article class="metric"><span>🗺 Movimientos</span><strong id="movementCount">—</strong><small>registros activos</small></article>
+        <article class="metric"><span>📦 Piezas registradas</span><strong id="pieceCount">—</strong><small>unidades rastreadas</small></article>
+        <article class="metric"><span>🛖 Entradas</span><strong id="entryCount">—</strong><small>ingresos al sistema</small></article>
+        <article class="metric"><span>🚚 Salidas</span><strong id="exitCount">—</strong><small>despachos activos</small></article>
+      </section>
+
+      <section class="insights">
+        <article class="panel"><div class="panel-title"><h2>Estado de las tapas</h2><span id="statusTotal"></span></div><div class="bars" id="statusBars"></div></article>
+        <article class="panel"><div class="panel-title"><h2>Tipo de movimiento</h2><span>Por piezas</span></div><div class="bars" id="reasonBars"></div></article>
+      </section>
+
+      <section class="panel records">
+        <div class="records-top">
+          <div><h2>Movimientos</h2><p id="recordDescription">Cargando información…</p></div>
+          <label class="quick-search">⌕ <input id="quickSearch" type="search" placeholder="Buscar en movimientos" /></label>
+        </div>
+        <div class="table-wrap"><table><thead id="tableHead"></thead><tbody id="tableBody"></tbody></table></div>
+        <p class="empty" id="emptyMessage" hidden>No hay movimientos que coincidan con la búsqueda.</p>
+      </section>
+      <div class="site-footer"><p class="watermark">@vickomalu</p></div>
+    </main>
+
+    <dialog id="advancedDialog">
+      <form method="dialog" id="advancedForm">
+        <div class="dialog-header"><div><p class="eyebrow">FILTROS</p><h2>Búsqueda avanzada</h2></div><button class="icon-button" value="cancel" aria-label="Cerrar">×</button></div>
+        <div class="filter-grid">
+          <label>Texto libre<input name="text" placeholder="Empresa, placa, chofer…" /></label>
+          <label>Razón<select name="RAZON"><option value="">Todas</option></select></label>
+          <label>Estado<select name="ESTATUS"><option value="">Todos</option></select></label>
+          <label>Tamaño<select name="TAMAÑO"><option value="">Todos</option></select></label>
+          <label>Desde<input name="from" type="date" /></label>
+          <label>Hasta<input name="to" type="date" /></label>
+        </div>
+        <div class="dialog-actions"><button class="button secondary" type="button" id="clearFilters">Limpiar</button><button class="button primary" value="apply">Aplicar filtros</button></div>
+      </form>
+    </dialog>
+    <script src="app.js"></script>
+  </body>
+</html>
