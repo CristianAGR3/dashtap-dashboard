@@ -1,9 +1,9 @@
 {
-  "actualizado": "2026-08-03T14:47:08-06:00",
+  "actualizado": "2026-08-03T14:53:44-06:00",
   "archivo": "TAPAS .xlsm",
   "hoja": "MOVIMIENTOS",
-  "total_movimientos": 23,
-  "total_piezas": 41,
+  "total_movimientos": 25,
+  "total_piezas": 53,
   "movimientos": [
     {
       "TAPA": "VERDE",
@@ -301,6 +301,32 @@
       "RAZON": "CHOFER",
       "CHOFER": "JORGE",
       "PLACA": "LG-61-969",
+      "REGRESO": "N/A",
+      "TAPAS": "N/A"
+    },
+    {
+      "TAPA": "N/A",
+      "PZ": 2,
+      "TAMAÑO": "N/A",
+      "ESTATUS": "ROTA",
+      "FECHA": "2026-08-03",
+      "NOMBRE": "ARAUCO",
+      "RAZON": "SALIDA",
+      "CHOFER": "N/A",
+      "PLACA": "N/A",
+      "REGRESO": "N/A",
+      "TAPAS": "N/A"
+    },
+    {
+      "TAPA": "NEGRA",
+      "PZ": 10,
+      "TAMAÑO": "N/A",
+      "ESTATUS": "BUEN ESTADO",
+      "FECHA": "2026-08-03",
+      "NOMBRE": "ARAUCO",
+      "RAZON": "ENTRADA",
+      "CHOFER": "N/A",
+      "PLACA": "N/A",
       "REGRESO": "N/A",
       "TAPAS": "N/A"
     }
