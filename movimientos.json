@@ -1,9 +1,9 @@
 {
-  "actualizado": "2026-08-12T11:47:21-06:00",
+  "actualizado": "2026-08-12T12:15:03-06:00",
   "archivo": "TAPAS.xlsm",
   "hoja": "MOVIMIENTOS",
-  "total_movimientos": 76,
-  "total_piezas": 118,
+  "total_movimientos": 77,
+  "total_piezas": 128,
   "movimientos": [
     {
       "TAPA": "VERDE",
@@ -991,6 +991,19 @@
       "CHOFER": "CA. ROJA",
       "PLACA": "PJE-848-C",
       "REGRESO": "OK",
+      "TAPAS": "N/A"
+    },
+    {
+      "TAPA": "TACON",
+      "PZ": 10,
+      "TAMAÑO": "15 MM",
+      "ESTATUS": "MEDIO",
+      "FECHA": "2026-08-11",
+      "NOMBRE": "N/A",
+      "RAZON": "ENTRADA",
+      "CHOFER": "N/A",
+      "PLACA": "N/A",
+      "REGRESO": "N/A",
       "TAPAS": "N/A"
     }
   ]
