@@ -1,9 +1,9 @@
 {
-  "actualizado": "2026-08-15T13:19:49-06:00",
+  "actualizado": "2026-08-15T13:41:35-06:00",
   "archivo": "TAPAS.xlsm",
   "hoja": "MOVIMIENTOS",
-  "total_movimientos": 170,
-  "total_piezas": 299,
+  "total_movimientos": 172,
+  "total_piezas": 301,
   "movimientos": [
     {
       "TAPA": "VERDE",
@@ -2214,6 +2214,32 @@
       "PLACA": "N/A",
       "REGRESO": "N/A",
       "Y7N": "N/A"
+    },
+    {
+      "TAPA": "TACON",
+      "PZ": 1,
+      "TAMAÑO": "15 MM",
+      "ESTATUS": "MEDIO",
+      "FECHA": "2026-08-15",
+      "NOMBRE": "N/A",
+      "RAZON": "CHOFER",
+      "CHOFER": "JORGE",
+      "PLACA": "LG-61-969",
+      "REGRESO": "OK",
+      "Y7N": "COMPLET"
+    },
+    {
+      "TAPA": "NEGRAS",
+      "PZ": 1,
+      "TAMAÑO": "30 MM",
+      "ESTATUS": "MEDIO",
+      "FECHA": "2026-08-15",
+      "NOMBRE": "N/A",
+      "RAZON": "CHOFER",
+      "CHOFER": "ISRAEL",
+      "PLACA": "LF-84-111",
+      "REGRESO": "OK",
+      "Y7N": "COMPLET"
     }
   ]
 }
