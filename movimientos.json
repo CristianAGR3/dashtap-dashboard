@@ -1,9 +1,9 @@
 {
-  "actualizado": "2026-08-18T11:42:48-06:00",
+  "actualizado": "2026-08-20T09:25:33-06:00",
   "archivo": "TAPAS.xlsm",
   "hoja": "MOVIMIENTOS",
-  "total_movimientos": 193,
-  "total_piezas": 330,
+  "total_movimientos": 198,
+  "total_piezas": 338,
   "movimientos": [
     {
       "TAPA": "VERDE",
@@ -2513,6 +2513,71 @@
       "PLACA": "PJE-848-C",
       "REGRESO": "N/A",
       "Y7N": "N/A"
+    },
+    {
+      "TAPA": "NEGRAS",
+      "PZ": 1,
+      "TAMAÑO": "30 MM",
+      "ESTATUS": "MEDIO",
+      "FECHA": "2026-08-19",
+      "NOMBRE": "N/A",
+      "RAZON": "CHOFER",
+      "CHOFER": "JOEL",
+      "PLACA": "LG-32-294",
+      "REGRESO": "OK",
+      "Y7N": "COMPLET"
+    },
+    {
+      "TAPA": "NEGRAS",
+      "PZ": 2,
+      "TAMAÑO": "15 MM",
+      "ESTATUS": "MEDIO",
+      "FECHA": "2026-08-19",
+      "NOMBRE": "N/A",
+      "RAZON": "CHOFER",
+      "CHOFER": "JOEL",
+      "PLACA": "LG-32-294",
+      "REGRESO": "OK",
+      "Y7N": "COMPLET"
+    },
+    {
+      "TAPA": "NEGRAS",
+      "PZ": 1,
+      "TAMAÑO": "18 MM",
+      "ESTATUS": "MEDIO",
+      "FECHA": "2026-08-19",
+      "NOMBRE": "N/A",
+      "RAZON": "CHOFER",
+      "CHOFER": "JORGE",
+      "PLACA": "LG-61-969",
+      "REGRESO": "OK",
+      "Y7N": "COMPLET"
+    },
+    {
+      "TAPA": "NEGRAS",
+      "PZ": 2,
+      "TAMAÑO": "15 MM",
+      "ESTATUS": "MEDIO",
+      "FECHA": "2026-08-19",
+      "NOMBRE": "N/A",
+      "RAZON": "CHOFER",
+      "CHOFER": "JORGE",
+      "PLACA": "LG-61-969",
+      "REGRESO": "OK",
+      "Y7N": "COMPLET"
+    },
+    {
+      "TAPA": "VERDES",
+      "PZ": 2,
+      "TAMAÑO": "30 MM",
+      "ESTATUS": "MEDIO",
+      "FECHA": "2026-08-19",
+      "NOMBRE": "N/A",
+      "RAZON": "CHOFER",
+      "CHOFER": "JAVIER",
+      "PLACA": "KU-4980-A",
+      "REGRESO": "OK",
+      "Y7N": "COMPLET"
     }
   ]
 }
