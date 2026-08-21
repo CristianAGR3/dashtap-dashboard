@@ -1,6 +1,6 @@
 const state = { rows: [], filtered: [], filters: {} };
-const columns = ["FECHA", "RAZON", "CODIGO", "DESCRIPCION", "PIEZAS", "MOTIVO", "CHOFER", "PLACAS"];
-const labels = { CODIGO: "CÓDIGO", DESCRIPCION: "DESCRIPCIÓN", PIEZAS: "PIEZAS", MOTIVO: "MOTIVO", FECHA: "FECHA", CHOFER: "CHOFER", PLACAS: "PLACAS", RAZON: "RAZÓN" };
+const columns = ["FECHA", "RAZON", "CODIGO", "DESCRIPCION", "PIEZAS", "MOTIVO", "CHOFER", "PLACAS", "KILOMETRAJE", "REGRESO", "TAPAS"];
+const labels = { CODIGO: "CÓDIGO", DESCRIPCION: "DESCRIPCIÓN", PIEZAS: "PIEZAS", MOTIVO: "MOTIVO", FECHA: "FECHA", CHOFER: "CHOFER", PLACAS: "PLACAS", RAZON: "RAZÓN", KILOMETRAJE: "KILOMETRAJE", REGRESO: "REGRESO", TAPAS: "TAPAS" };
 const $ = (selector) => document.querySelector(selector);
 
 function norm(value) { return String(value ?? "").trim().toUpperCase(); }
