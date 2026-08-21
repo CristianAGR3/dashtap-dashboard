@@ -34,3 +34,66 @@ body::after { content:""; position:fixed; z-index:-1; pointer-events:none; width
 [data-theme="dark"] .update-status { box-shadow:0 3px 0 #050506; }
 @media (max-width:980px) { .hero { align-items:flex-start; flex-direction:column; }.hero-actions { width:100%; }.update-status { margin-right:auto; } }
 @media (max-width:720px) { .update-status { width:100%; }.update-status time { white-space:normal; }.hero-actions .button { flex:1 1 180px; } }
+
+/* Anime Tech Theme */
+:root {
+  --anime-ink:#24153f;
+  --anime-pink:#ff4f9a;
+  --anime-cyan:#32d9ff;
+  --anime-yellow:#ffe45f;
+  --anime-violet:#865dff;
+  --anime-paper:#fffaff;
+  --anime-shadow:#24153f;
+}
+body {
+  color:var(--anime-ink);
+  background:
+    radial-gradient(circle at 88% 8%,#ff81bd 0 9%,transparent 9.4%),
+    radial-gradient(circle at 6% 90%,#57dfff 0 8%,transparent 8.4%),
+    repeating-linear-gradient(118deg,transparent 0 46px,#6c49cc12 47px 49px),
+    linear-gradient(135deg,#ffeef8 0%,#fff6c9 45%,#dffaff 100%);
+}
+body::before {
+  content:""; position:fixed; inset:0; pointer-events:none; z-index:-1; opacity:.45;
+  background:repeating-radial-gradient(circle at 50% 42%,transparent 0 65px,#ffffff70 66px 68px);
+}
+.page-shell::before,.page-shell::after { content:"✦"; position:absolute; color:var(--anime-pink); font-size:clamp(2rem,6vw,5rem); opacity:.22; filter:drop-shadow(5px 5px 0 var(--anime-cyan)); animation:anime-float 3s ease-in-out infinite; pointer-events:none; }
+.page-shell::before { top:145px; right:1%; }.page-shell::after { content:"★"; top:43%; left:-2%; animation-delay:-1.5s; }
+.hero { position:relative; border-bottom:4px solid var(--anime-ink); }
+.hero::after { content:""; position:absolute; left:0; bottom:-10px; width:150px; height:16px; background:linear-gradient(90deg,var(--anime-pink) 0 40%,var(--anime-yellow) 40% 70%,var(--anime-cyan) 70%); clip-path:polygon(0 25%,90% 25%,100% 50%,90% 75%,0 75%); }
+.hero h1 { color:var(--anime-ink); font-style:italic; letter-spacing:-.07em; text-transform:uppercase; text-shadow:3px 3px 0 #fff,6px 6px 0 var(--anime-cyan); transform:skew(-3deg); }
+.hero h1 em { color:var(--anime-pink); text-shadow:2px 2px 0 #fff,5px 5px 0 var(--anime-ink); }
+.eyebrow { color:var(--anime-violet); }.jp-kicker { display:inline-block; margin-left:7px; color:var(--anime-pink); font-size:.72em; letter-spacing:.06em; }
+.anime-tag { display:inline-block; margin-left:8px; padding:3px 8px; border:2px solid var(--anime-ink); border-radius:999px; color:var(--anime-ink); background:var(--anime-yellow); box-shadow:2px 2px 0 var(--anime-ink); font-size:.65rem; font-weight:950; letter-spacing:.1em; transform:rotate(-2deg); }
+.update-status,.button,.theme-toggle,.quick-search { border-color:var(--anime-ink); box-shadow:4px 4px 0 var(--anime-shadow); }
+.button { color:#fff; background:linear-gradient(135deg,var(--anime-violet),var(--anime-pink)); border-radius:8px 16px 8px 16px; text-transform:uppercase; letter-spacing:.03em; }
+.button:hover { box-shadow:7px 7px 0 var(--anime-shadow); transform:translate(-2px,-2px); }
+.primary { color:var(--anime-ink); background:linear-gradient(135deg,var(--anime-yellow),#ff9f43); border-color:var(--anime-ink); box-shadow:4px 4px 0 var(--anime-shadow); }
+.theme-toggle { background:linear-gradient(135deg,var(--anime-cyan),var(--anime-violet)); }
+.view-switch { transform:skew(-1deg); }
+.view-button { border-color:var(--anime-ink); border-radius:8px 20px 8px 20px; background:#ffffffdf; box-shadow:5px 5px 0 var(--anime-shadow); }
+.view-button:hover { box-shadow:8px 8px 0 var(--anime-shadow); transform:translate(-2px,-2px); }
+.view-button.is-active { color:var(--anime-ink); border-color:var(--anime-ink); background:linear-gradient(125deg,var(--anime-yellow),#ffb4d5 55%,#a9efff); box-shadow:6px 6px 0 var(--anime-pink),9px 9px 0 var(--anime-shadow); }
+.metric,.panel { position:relative; border-color:var(--anime-ink); border-radius:8px 22px 8px 22px; background:linear-gradient(145deg,#ffffffef,#fff7fded); box-shadow:6px 6px 0 var(--anime-shadow),inset 0 0 0 2px #fff; }
+.metric { border-top:8px solid var(--anime-pink); }
+.metric:nth-child(2) { border-top-color:var(--anime-cyan); }.metric:nth-child(3) { border-top-color:var(--anime-yellow); }.metric:nth-child(4) { border-top-color:var(--anime-violet); }
+.metric::after { border:0; width:85px; height:85px; right:-15px; bottom:-20px; opacity:.16; background:repeating-conic-gradient(var(--anime-pink) 0 10deg,transparent 10deg 20deg); clip-path:polygon(50% 0,61% 34%,98% 20%,70% 50%,100% 70%,62% 66%,50% 100%,39% 66%,0 72%,29% 50%,3% 21%,39% 34%); }
+.metric span,th { color:var(--anime-violet); }.metric strong { font-style:italic; text-shadow:2px 2px 0 #ffcbdf; }
+.panel-title h2,.records-top h2 { text-transform:uppercase; font-style:italic; letter-spacing:.025em; }
+.panel-title h2::before,.records-top h2::before { content:"// "; color:var(--anime-pink); }
+.bar-track { border-color:var(--anime-ink); background:#ebe5ff; }.bar-fill { background:repeating-linear-gradient(135deg,var(--anime-cyan) 0 10px,var(--anime-violet) 10px 20px); box-shadow:inset 0 2px #fff,2px 0 0 var(--anime-ink); }.bar-row:nth-child(2) .bar-fill { background:repeating-linear-gradient(135deg,var(--anime-pink) 0 10px,#ff9ec8 10px 20px); }.bar-row:nth-child(3) .bar-fill { background:repeating-linear-gradient(135deg,var(--anime-yellow) 0 10px,#ff9f43 10px 20px); }
+th { border-bottom:3px solid var(--anime-ink); } td { border-top:2px dashed #a584c0; } tbody tr:hover { background:#63ddff25; }
+.quick-search { background:#fff; border-radius:6px 14px 6px 14px; }
+.site-footer { border-top:3px solid var(--anime-ink); margin-top:18px; }
+
+[data-theme="dark"] body,body[data-theme="dark"] {
+  color:#f8f3ff;
+  background:radial-gradient(circle at 85% 8%,#ff3f9b33 0 10%,transparent 10.5%),repeating-linear-gradient(118deg,transparent 0 48px,#4edfff10 49px 51px),linear-gradient(135deg,#100b22,#201041 55%,#071f31);
+}
+[data-theme="dark"] .hero h1 { color:#fff; text-shadow:3px 3px 0 #2b153f,6px 6px 0 var(--anime-cyan); }
+[data-theme="dark"] .metric,[data-theme="dark"] .panel,[data-theme="dark"] .view-button { color:#f8f3ff; background:linear-gradient(145deg,#21153aee,#111a34ee); border-color:#07050d; box-shadow:6px 6px 0 #05030b,inset 0 0 0 2px #ffffff14; }
+[data-theme="dark"] .view-button.is-active { color:#fff; background:linear-gradient(125deg,#742b91,#d23285 55%,#14677d); box-shadow:6px 6px 0 var(--anime-cyan),9px 9px 0 #05030b; }
+[data-theme="dark"] .view-button.is-active small,[data-theme="dark"] .view-button small { color:#d6d0e5; }
+[data-theme="dark"] .anime-tag { color:#fff; background:#6f2ba0; border-color:#07050d; }
+[data-theme="dark"] .quick-search { background:#f7f4ff; }
+@keyframes anime-float { 50% { transform:translateY(-12px) rotate(12deg) scale(1.08); } }

@@ -1,4 +1,4 @@
-const CACHE_NAME = "tapas-pwa-20260821-v1";
+const CACHE_NAME = "tapas-pwa-20260821-v2-anime";
 const CACHE_PREFIX = "tapas-pwa-";
 const APP_SHELL = ["./", "./index.html", "./styles.css", "./app.js", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png", "./movimientos.json"];
 
