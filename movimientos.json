@@ -1,5 +1,5 @@
 {
-  "actualizado": "2026-08-21T15:37:40-06:00",
+  "actualizado": "2026-08-21T15:44:52-06:00",
   "archivo": "TAPAS.xlsm",
   "hoja": "MOVIMIENTOS + REGISTRO",
   "total_movimientos": 9,
@@ -16,7 +16,8 @@
       "RAZON": "CHOFER",
       "KILOMETRAJE": "19045",
       "REGRESO": "OK",
-      "TAPAS": "COMPLET"
+      "TAPAS": "COMPLET",
+      "ORIGEN": "REGISTRO"
     },
     {
       "CODIGO": "TAP12",
@@ -29,7 +30,8 @@
       "RAZON": "CHOFER",
       "KILOMETRAJE": "137114",
       "REGRESO": "OK",
-      "TAPAS": "COMPLET"
+      "TAPAS": "COMPLET",
+      "ORIGEN": "REGISTRO"
     },
     {
       "CODIGO": "TAP05",
@@ -42,7 +44,8 @@
       "RAZON": "CHOFER",
       "KILOMETRAJE": "N/A",
       "REGRESO": "OK",
-      "TAPAS": "COMPLET"
+      "TAPAS": "COMPLET",
+      "ORIGEN": "REGISTRO"
     },
     {
       "CODIGO": "TAN30",
@@ -55,7 +58,8 @@
       "RAZON": "CHOFER",
       "KILOMETRAJE": "19045",
       "REGRESO": "OK",
-      "TAPAS": "COMPLET"
+      "TAPAS": "COMPLET",
+      "ORIGEN": "REGISTRO"
     },
     {
       "CODIGO": "TAN30",
@@ -68,7 +72,8 @@
       "RAZON": "CHOFER",
       "KILOMETRAJE": "N/A",
       "REGRESO": "OK",
-      "TAPAS": "COMPLET"
+      "TAPAS": "COMPLET",
+      "ORIGEN": "REGISTRO"
     },
     {
       "CODIGO": "TAN18",
@@ -81,7 +86,8 @@
       "RAZON": "CHOFER",
       "KILOMETRAJE": "137114",
       "REGRESO": "OK",
-      "TAPAS": "COMPLET"
+      "TAPAS": "COMPLET",
+      "ORIGEN": "REGISTRO"
     },
     {
       "CODIGO": "TAN15",
@@ -94,7 +100,8 @@
       "RAZON": "CHOFER",
       "KILOMETRAJE": "19045",
       "REGRESO": "OK",
-      "TAPAS": "COMPLET"
+      "TAPAS": "COMPLET",
+      "ORIGEN": "REGISTRO"
     },
     {
       "CODIGO": "TAN15",
@@ -107,7 +114,8 @@
       "RAZON": "CHOFER",
       "KILOMETRAJE": "137114",
       "REGRESO": "OK",
-      "TAPAS": "COMPLET"
+      "TAPAS": "COMPLET",
+      "ORIGEN": "REGISTRO"
     },
     {
       "CODIGO": "TACON",
@@ -120,7 +128,8 @@
       "RAZON": "CHOFER",
       "KILOMETRAJE": "137114",
       "REGRESO": "OK",
-      "TAPAS": "COMPLET"
+      "TAPAS": "COMPLET",
+      "ORIGEN": "REGISTRO"
     }
   ]
 }

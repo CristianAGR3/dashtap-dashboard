@@ -25,21 +25,30 @@
         </div>
       </header>
 
+      <nav class="view-switch" aria-label="Seleccionar información">
+        <button class="view-button is-active" id="movementsViewButton" type="button" aria-pressed="true">
+          <span>📦</span><strong>Movimientos</strong><small>Entradas, salidas y mermas</small>
+        </button>
+        <button class="view-button" id="driversViewButton" type="button" aria-pressed="false">
+          <span>🚚</span><strong>Chofer y registro</strong><small>Entregas, kilometraje y regreso</small>
+        </button>
+      </nav>
+
       <section class="summary" aria-label="Resumen">
-        <article class="metric"><span>🗺 Movimientos</span><strong id="movementCount">—</strong><small>registros activos</small></article>
+        <article class="metric"><span id="movementMetricLabel">🗺 Movimientos</span><strong id="movementCount">—</strong><small id="movementMetricHelp">registros activos</small></article>
         <article class="metric"><span>📦 Piezas registradas</span><strong id="pieceCount">—</strong><small>unidades rastreadas</small></article>
-        <article class="metric"><span>🛖 Entradas</span><strong id="entryCount">—</strong><small>ingresos al sistema</small></article>
-        <article class="metric"><span>🚚 Salidas</span><strong id="exitCount">—</strong><small>despachos activos</small></article>
+        <article class="metric"><span id="entryMetricLabel">🛖 Entradas</span><strong id="entryCount">—</strong><small id="entryMetricHelp">ingresos al sistema</small></article>
+        <article class="metric"><span id="exitMetricLabel">🚚 Salidas</span><strong id="exitCount">—</strong><small id="exitMetricHelp">despachos activos</small></article>
       </section>
 
       <section class="insights">
-        <article class="panel"><div class="panel-title"><h2>Motivo del movimiento</h2><span id="statusTotal"></span></div><div class="bars" id="statusBars"></div></article>
-        <article class="panel"><div class="panel-title"><h2>Tipo de movimiento</h2><span>Por piezas</span></div><div class="bars" id="reasonBars"></div></article>
+        <article class="panel"><div class="panel-title"><h2 id="statusChartTitle">Motivo del movimiento</h2><span id="statusTotal"></span></div><div class="bars" id="statusBars"></div></article>
+        <article class="panel"><div class="panel-title"><h2 id="reasonChartTitle">Tipo de movimiento</h2><span>Por piezas</span></div><div class="bars" id="reasonBars"></div></article>
       </section>
 
       <section class="panel records">
         <div class="records-top">
-          <div><h2>Movimientos</h2><p id="recordDescription">Cargando información…</p></div>
+          <div><h2 id="recordsTitle">Movimientos</h2><p id="recordDescription">Cargando información…</p></div>
           <label class="quick-search">⌕ <input id="quickSearch" type="search" placeholder="Buscar en movimientos" /></label>
         </div>
         <div class="table-wrap"><table><thead id="tableHead"></thead><tbody id="tableBody"></tbody></table></div>
