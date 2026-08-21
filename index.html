@@ -1,84 +1,46 @@
 <!doctype html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#7b3420" />
-    <meta name="application-name" content="TAPAS" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <link rel="manifest" href="manifest.webmanifest" />
-    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
-    <link rel="apple-touch-icon" href="icon-192.png" />
-    <title>Control de Tapas | Movimientos</title>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body data-theme="light">
-    <main class="page-shell">
-      <header class="hero">
-        <div>
-          <p class="eyebrow"><span class="live-dot"></span> ¡INVENTARIO EN MARCHA! <b class="jp-kicker">タパス・コントロール</b></p>
-          <h1>Control de <em>tapas</em><span class="fruit">🍊</span></h1>
-          <p class="subtitle">Movimientos consolidados desde <strong>TAPAS.xlsm</strong> <span class="anime-tag">SYSTEM ONLINE</span></p>
-        </div>
-        <div class="hero-actions">
-          <div class="update-status" aria-live="polite">
-            <span class="sync-dot"></span>
-            <span><small>ÚLTIMA ACTUALIZACIÓN</small><time id="lastUpdated">Cargando datos…</time></span>
-          </div>
-          <button class="theme-toggle" id="themeButton" aria-label="Activar modo oscuro" title="Cambiar tema"><span>☀</span><span>☾</span><i></i></button>
-          <button class="button secondary install-button" id="installButton" type="button" hidden>⬇ Instalar app</button>
-          <button class="button secondary" id="advancedButton">⌕ Búsqueda avanzada</button>
-          <button class="button primary" id="refreshButton">↻ Actualizar datos</button>
-        </div>
-      </header>
-
-      <nav class="view-switch" aria-label="Seleccionar información">
-        <button class="view-button is-active" id="movementsViewButton" type="button" aria-pressed="true">
-          <span>📦</span><strong>Movimientos</strong><small>Entradas, salidas y mermas</small>
-        </button>
-        <button class="view-button" id="driversViewButton" type="button" aria-pressed="false">
-          <span>🚚</span><strong>Chofer y registro</strong><small>Entregas, kilometraje y regreso</small>
-        </button>
-      </nav>
-
-      <section class="summary" aria-label="Resumen">
-        <article class="metric"><span id="movementMetricLabel">🗺 Movimientos</span><strong id="movementCount">—</strong><small id="movementMetricHelp">registros activos</small></article>
-        <article class="metric"><span>📦 Piezas registradas</span><strong id="pieceCount">—</strong><small>unidades rastreadas</small></article>
-        <article class="metric"><span id="entryMetricLabel">🛖 Entradas</span><strong id="entryCount">—</strong><small id="entryMetricHelp">ingresos al sistema</small></article>
-        <article class="metric"><span id="exitMetricLabel">🚚 Salidas</span><strong id="exitCount">—</strong><small id="exitMetricHelp">despachos activos</small></article>
-      </section>
-
-      <section class="insights">
-        <article class="panel"><div class="panel-title"><h2 id="statusChartTitle">Motivo del movimiento</h2><span id="statusTotal"></span></div><div class="bars" id="statusBars"></div></article>
-        <article class="panel"><div class="panel-title"><h2 id="reasonChartTitle">Tipo de movimiento</h2><span>Por piezas</span></div><div class="bars" id="reasonBars"></div></article>
-      </section>
-
-      <section class="panel records">
-        <div class="records-top">
-          <div><h2 id="recordsTitle">Movimientos</h2><p id="recordDescription">Cargando información…</p></div>
-          <label class="quick-search">⌕ <input id="quickSearch" type="search" placeholder="Buscar en movimientos" /></label>
-        </div>
-        <div class="table-wrap"><table><thead id="tableHead"></thead><tbody id="tableBody"></tbody></table></div>
-        <p class="empty" id="emptyMessage" hidden>No hay movimientos que coincidan con la búsqueda.</p>
-      </section>
-      <div class="site-footer"><p class="watermark">@vickomalu</p></div>
-    </main>
-
-    <dialog id="advancedDialog">
-      <form method="dialog" id="advancedForm">
-        <div class="dialog-header"><div><p class="eyebrow">FILTROS</p><h2>Búsqueda avanzada</h2></div><button class="icon-button" value="cancel" aria-label="Cerrar">×</button></div>
-        <div class="filter-grid">
-          <label>Texto libre<input name="text" placeholder="Código, descripción, placa…" /></label>
-          <label>Razón<select name="RAZON"><option value="">Todas</option></select></label>
-          <label>Motivo<select name="MOTIVO"><option value="">Todos</option></select></label>
-          <label>Chofer<select name="CHOFER"><option value="">Todos</option></select></label>
-          <label>Desde<input name="from" type="date" /></label>
-          <label>Hasta<input name="to" type="date" /></label>
-        </div>
-        <div class="dialog-actions"><button class="button secondary" type="button" id="clearFilters">Limpiar</button><button class="button primary" value="apply">Aplicar filtros</button></div>
-      </form>
-    </dialog>
-    <script src="app.js"></script>
-  </body>
-</html>
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><meta name="theme-color" content="#7b3420">
+  <meta name="application-name" content="TAPAS"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="manifest" href="manifest.webmanifest"><link rel="icon" type="image/png" sizes="192x192" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png">
+  <title>TAPAS | Control operativo</title><link rel="stylesheet" href="styles.css?v=20260821-menu-assistant">
+</head>
+<body data-theme="light">
+<div class="app-layout">
+  <aside class="side-menu" aria-label="Menú principal">
+    <div class="side-brand"><span>🍊</span><div><strong>TAPAS</strong><small>Control operativo</small></div></div>
+    <nav class="module-menu" role="tablist" aria-orientation="vertical">
+      <button class="module-button is-active" data-view="MOVIMIENTOS" role="tab" aria-selected="true"><span>📦</span><strong>Movimientos</strong><small>Entradas, salidas y mermas</small></button>
+      <button class="module-button" data-view="INVENTARIO" role="tab" aria-selected="false"><span>🧰</span><strong>Inventario</strong><small>Existencias por código</small></button>
+      <button class="module-button" data-view="REGISTRO" role="tab" aria-selected="false"><span>🚚</span><strong>Chofer y registro</strong><small>Entregas y kilometraje</small></button>
+    </nav>
+    <div class="side-tools"><button id="notificationButton" type="button">🔔 <span>Notificaciones</span></button><button id="installButton" type="button" hidden>⬇ <span>Instalar app</span></button></div>
+  </aside>
+  <main class="page-shell">
+    <header class="hero">
+      <div><p class="eyebrow"><span class="live-dot"></span> ¡INVENTARIO EN MARCHA! <b class="jp-kicker">タパス・コントロール</b></p><h1>Control de <em>tapas</em><span class="fruit">🍊</span></h1><p class="subtitle">Datos consolidados desde <strong>TAPAS.xlsm</strong> <span class="anime-tag">SYSTEM ONLINE</span></p></div>
+      <div class="hero-actions"><div class="update-status" aria-live="polite"><span class="sync-dot"></span><span><small>ÚLTIMA ACTUALIZACIÓN</small><time id="lastUpdated">Cargando datos…</time></span></div><button class="theme-toggle" id="themeButton" aria-label="Activar modo oscuro" title="Cambiar tema"><span>☀</span><span>☾</span><i></i></button><button class="button primary" id="refreshButton">↻ Actualizar datos</button></div>
+    </header>
+    <section class="module-heading"><div><p class="eyebrow" id="moduleEyebrow">OPERACIÓN</p><h2 id="moduleTitle">Movimientos</h2><p id="moduleDescription">Entradas, salidas y mermas registradas.</p></div><button class="button secondary advanced-section-button" id="advancedButton">⌕ Búsqueda avanzada de movimientos</button></section>
+    <section class="summary" aria-label="Resumen">
+      <article class="metric"><span id="movementMetricLabel">🗺 Movimientos</span><strong id="movementCount">—</strong><small id="movementMetricHelp">registros activos</small></article>
+      <article class="metric"><span id="pieceMetricLabel">📦 Piezas registradas</span><strong id="pieceCount">—</strong><small id="pieceMetricHelp">unidades rastreadas</small></article>
+      <article class="metric"><span id="entryMetricLabel">🛖 Entradas</span><strong id="entryCount">—</strong><small id="entryMetricHelp">ingresos al sistema</small></article>
+      <article class="metric"><span id="exitMetricLabel">🚚 Salidas</span><strong id="exitCount">—</strong><small id="exitMetricHelp">despachos activos</small></article>
+    </section>
+    <section class="insights"><article class="panel"><div class="panel-title"><h2 id="statusChartTitle">Motivo del movimiento</h2><span id="statusTotal"></span></div><div class="bars" id="statusBars"></div></article><article class="panel"><div class="panel-title"><h2 id="reasonChartTitle">Tipo de movimiento</h2><span id="reasonChartHelp">Por piezas</span></div><div class="bars" id="reasonBars"></div></article></section>
+    <section class="panel records">
+      <div class="records-top"><div><h2 id="recordsTitle">Movimientos</h2><p id="recordDescription">Cargando información…</p></div><div class="record-actions"><label class="quick-search">⌕ <input id="quickSearch" type="search" placeholder="Buscar en movimientos"></label><button class="export-button excel" id="excelButton" type="button">▦ Excel</button><button class="export-button pdf" id="pdfButton" type="button">▤ PDF</button></div></div>
+      <div class="table-wrap"><table><thead id="tableHead"></thead><tbody id="tableBody"></tbody></table></div><p class="empty" id="emptyMessage" hidden>No hay registros que coincidan con la búsqueda.</p>
+    </section><div class="site-footer"><p class="watermark">@vickomalu</p></div>
+  </main>
+</div>
+<aside class="assistant" id="assistant" aria-live="polite"><div class="assistant-bubble" id="assistantBubble"><button id="assistantClose" type="button" aria-label="Cerrar mensaje">×</button><strong id="assistantTitle">¡Hola! Soy Lu</strong><p id="assistantMessage">Te avisaré sobre datos, filtros y descargas.</p></div><button class="assistant-character" id="assistantButton" type="button" aria-label="Abrir asistente Lu"><span class="wood-knot" aria-hidden="true"></span><span class="assistant-eyes">••</span><span class="assistant-mouth">⌣</span><span class="assistant-name">LU</span></button></aside>
+<dialog id="advancedDialog"><form method="dialog" id="advancedForm"><div class="dialog-header"><div><p class="eyebrow">FILTROS</p><h2 id="dialogTitle">Búsqueda avanzada</h2></div><button class="icon-button" value="cancel" aria-label="Cerrar">×</button></div><div class="filter-grid">
+  <label>Texto libre<input name="text" placeholder="Código, descripción, placa…"></label>
+  <label data-filter="RAZON">Razón<select name="RAZON"><option value="">Todas</option></select></label><label data-filter="MOTIVO">Motivo<select name="MOTIVO"><option value="">Todos</option></select></label><label data-filter="CHOFER">Chofer<select name="CHOFER"><option value="">Todos</option></select></label>
+  <label data-filter="STOCK">Estado de stock<select name="STOCK"><option value="">Todos</option><option value="AVAILABLE">Con existencia</option><option value="EMPTY">Sin existencia</option></select></label><label data-filter="FROM">Desde<input name="from" type="date"></label><label data-filter="TO">Hasta<input name="to" type="date"></label>
+</div><div class="dialog-actions"><button class="button secondary" type="button" id="clearFilters">Limpiar</button><button class="button primary" value="apply">Aplicar filtros</button></div></form></dialog>
+<script src="app.js?v=20260821-menu-assistant"></script>
+</body></html>

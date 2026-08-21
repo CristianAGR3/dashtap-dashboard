@@ -2,7 +2,7 @@
   "id": "./",
   "name": "TAPAS - Control operativo",
   "short_name": "TAPAS",
-  "description": "Dashboard de movimientos, choferes y registros de tapas.",
+  "description": "Dashboard de movimientos, inventario, choferes y registros de tapas.",
   "lang": "es-MX",
   "start_url": "./?source=pwa",
   "scope": "./",
@@ -18,6 +18,7 @@
   ],
   "shortcuts": [
     { "name": "Movimientos", "short_name": "Movimientos", "url": "./?view=MOVIMIENTOS&source=pwa", "icons": [{ "src": "icon-192.png", "sizes": "192x192", "type": "image/png" }] },
+    { "name": "Inventario", "short_name": "Inventario", "url": "./?view=INVENTARIO&source=pwa", "icons": [{ "src": "icon-192.png", "sizes": "192x192", "type": "image/png" }] },
     { "name": "Chofer y registro", "short_name": "Chofer", "url": "./?view=REGISTRO&source=pwa", "icons": [{ "src": "icon-192.png", "sizes": "192x192", "type": "image/png" }] }
   ]
 }

@@ -1,144 +1,74 @@
-const state = { rows: [], sectionRows: [], filtered: [], filters: {}, view: "MOVIMIENTOS" };
+const state = { rows: [], inventory: [], sectionRows: [], filtered: [], filters: {}, view: "MOVIMIENTOS" };
 let deferredInstallPrompt = null;
+let assistantTimer = null;
+
 const viewConfig = {
-  MOVIMIENTOS: {
-    title: "Movimientos",
-    columns: ["FECHA", "RAZON", "CODIGO", "DESCRIPCION", "PIEZAS", "MOTIVO", "CHOFER", "PLACAS"],
-    firstChart: "MOTIVO", secondChart: "RAZON",
-    firstChartTitle: "Motivo del movimiento", secondChartTitle: "Tipo de movimiento",
-  },
-  REGISTRO: {
-    title: "Chofer y registro",
-    columns: ["FECHA", "CODIGO", "DESCRIPCION", "PIEZAS", "KILOMETRAJE", "CHOFER", "PLACAS", "REGRESO", "TAPAS"],
-    firstChart: "CHOFER", secondChart: "REGRESO",
-    firstChartTitle: "Piezas por chofer", secondChartTitle: "Estado de regreso",
-  },
+  MOVIMIENTOS: { title:"Movimientos", eyebrow:"OPERACIÓN", description:"Entradas, salidas y mermas registradas.", columns:["FECHA","RAZON","CODIGO","DESCRIPCION","PIEZAS","MOTIVO","CHOFER","PLACAS"], firstChart:"MOTIVO", secondChart:"RAZON", firstChartTitle:"Motivo del movimiento", secondChartTitle:"Tipo de movimiento" },
+  INVENTARIO: { title:"Inventario", eyebrow:"EXISTENCIAS", description:"Stock actual leído directamente de la hoja INVENTARIO.", columns:["CODIGO","DESCRIPCION","STOCK","ESTADO"], firstChart:"FAMILIA", secondChart:"ESTADO", firstChartTitle:"Familias de producto", secondChartTitle:"Disponibilidad" },
+  REGISTRO: { title:"Chofer y registro", eyebrow:"LOGÍSTICA", description:"Entregas, kilometraje, placas y estado de regreso.", columns:["FECHA","CODIGO","DESCRIPCION","PIEZAS","KILOMETRAJE","CHOFER","PLACAS","REGRESO","TAPAS"], firstChart:"CHOFER", secondChart:"REGRESO", firstChartTitle:"Piezas por chofer", secondChartTitle:"Estado de regreso" },
 };
-const labels = { CODIGO: "CÓDIGO", DESCRIPCION: "DESCRIPCIÓN", PIEZAS: "PIEZAS", MOTIVO: "MOTIVO", FECHA: "FECHA", CHOFER: "CHOFER", PLACAS: "PLACAS", RAZON: "RAZÓN", KILOMETRAJE: "KILOMETRAJE", REGRESO: "REGRESO", TAPAS: "TAPAS" };
-const $ = (selector) => document.querySelector(selector);
+const labels = { CODIGO:"CÓDIGO", DESCRIPCION:"DESCRIPCIÓN", PIEZAS:"PIEZAS", MOTIVO:"MOTIVO", FECHA:"FECHA", CHOFER:"CHOFER", PLACAS:"PLACAS", RAZON:"RAZÓN", KILOMETRAJE:"KILOMETRAJE", REGRESO:"REGRESO", TAPAS:"TAPAS", STOCK:"STOCK", ESTADO:"ESTADO" };
+const $ = selector => document.querySelector(selector);
+const $$ = selector => [...document.querySelectorAll(selector)];
 
-function norm(value) { return String(value ?? "").trim().toUpperCase(); }
-function number(value) { return Number(value) || 0; }
-function sum(rows) { return rows.reduce((total, row) => total + number(row.PIEZAS), 0); }
-function formatNumber(value) { return new Intl.NumberFormat("es-MX").format(value); }
-function formatDate(value) { return value ? new Intl.DateTimeFormat("es-MX", { dateStyle: "medium" }).format(new Date(`${value}T12:00:00`)) : "—"; }
-function escapeHtml(value) { return String(value ?? "").replace(/[&<>'"]/g, character => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" }[character])); }
-function grouped(rows, key, byPieces = false) { return rows.reduce((acc, row) => { const label = row[key] || "Sin dato"; acc[label] = (acc[label] || 0) + (byPieces ? number(row.PIEZAS) : 1); return acc; }, {}); }
+function norm(value){ return String(value ?? "").trim().toUpperCase(); }
+function number(value){ return Number(value) || 0; }
+function sum(rows,key="PIEZAS"){ return rows.reduce((total,row)=>total+number(row[key]),0); }
+function formatNumber(value){ return new Intl.NumberFormat("es-MX").format(value); }
+function formatDate(value){ return value ? new Intl.DateTimeFormat("es-MX",{dateStyle:"medium"}).format(new Date(`${value}T12:00:00`)) : "—"; }
+function escapeHtml(value){ return String(value ?? "").replace(/[&<>'"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[c])); }
+function xmlEscape(value){ return String(value ?? "").replace(/[&<>'"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&apos;",'"':"&quot;"}[c])); }
+function inventoryFamily(code){ const value=norm(code); return value.startsWith("VSTAP")?"Vesto":value.startsWith("TAN")?"Tapa negra":value.startsWith("TAP")?"Tapa verde":value==="TACON"?"Tacón":"Otros"; }
+function prepareInventory(rows){ return rows.map(row=>({...row,STOCK:number(row.STOCK),ESTADO:number(row.STOCK)>0?"Disponible":"Sin existencia",FAMILIA:inventoryFamily(row.CODIGO)})); }
+function grouped(rows,key,byPieces=false){ return rows.reduce((acc,row)=>{ const label=row[key]||"Sin dato"; acc[label]=(acc[label]||0)+(byPieces?number(row.PIEZAS):1); return acc; },{}); }
 
-function renderBars(target, data) {
-  const entries = Object.entries(data).sort((a, b) => b[1] - a[1]);
-  const max = Math.max(...entries.map(([, value]) => value), 1);
-  $(target).innerHTML = entries.length ? entries.map(([label, value]) => `<div class="bar-row"><span>${escapeHtml(label)}</span><div class="bar-track"><div class="bar-fill" style="width:${value / max * 100}%"></div></div><b>${formatNumber(value)}</b></div>`).join("") : "<span class='footnote'>Sin datos</span>";
+function renderBars(target,data){ const entries=Object.entries(data).sort((a,b)=>b[1]-a[1]); const max=Math.max(...entries.map(([,v])=>v),1); $(target).innerHTML=entries.length?entries.map(([label,value])=>`<div class="bar-row"><span>${escapeHtml(label)}</span><div class="bar-track"><div class="bar-fill" style="width:${value/max*100}%"></div></div><b>${formatNumber(value)}</b></div>`).join(""):"<span class='footnote'>Sin datos</span>"; }
+
+function notifyAssistant(message,title="Lu te avisa",system=false){ clearTimeout(assistantTimer); $("#assistantTitle").textContent=title; $("#assistantMessage").textContent=message; $("#assistantBubble").classList.add("is-visible"); $("#assistant").classList.add("is-talking"); assistantTimer=setTimeout(()=>{ $("#assistantBubble").classList.remove("is-visible"); $("#assistant").classList.remove("is-talking"); },7000); if(system&&"Notification" in window&&Notification.permission==="granted") new Notification(title,{body:message,icon:"icon-192.png"}); }
+
+function populateSelects(){ ["RAZON","MOTIVO","CHOFER"].forEach(key=>{ const select=$(`[name="${key}"]`); const current=select.value; const values=[...new Set(state.sectionRows.map(row=>row[key]).filter(Boolean))].sort(); select.innerHTML=`<option value="">${key==="RAZON"?"Todas":"Todos"}</option>`+values.map(value=>`<option value="${escapeHtml(value)}">${escapeHtml(value)}</option>`).join(""); select.value=values.includes(current)?current:""; }); }
+
+function updateViewUi(){
+  const config=viewConfig[state.view]; const drivers=state.view==="REGISTRO"; const inventory=state.view==="INVENTARIO";
+  $$(".module-button").forEach(button=>{ const active=button.dataset.view===state.view; button.classList.toggle("is-active",active); button.setAttribute("aria-selected",String(active)); });
+  $("#moduleEyebrow").textContent=config.eyebrow; $("#moduleTitle").textContent=config.title; $("#moduleDescription").textContent=config.description; $("#recordsTitle").textContent=config.title;
+  $("#advancedButton").textContent=`⌕ Búsqueda avanzada de ${config.title.toLowerCase()}`; $("#dialogTitle").textContent=`Búsqueda avanzada · ${config.title}`; $("#quickSearch").placeholder=`Buscar en ${config.title.toLowerCase()}`;
+  $("#movementMetricLabel").textContent=inventory?"🧰 Artículos":drivers?"🚚 Registros de chofer":"🗺 Movimientos"; $("#movementMetricHelp").textContent=inventory?"códigos en catálogo":drivers?"entregas registradas":"registros activos";
+  $("#pieceMetricLabel").textContent=inventory?"📦 Stock total":"📦 Piezas registradas"; $("#pieceMetricHelp").textContent=inventory?"existencia acumulada":"unidades rastreadas";
+  $("#entryMetricLabel").textContent=inventory?"✅ Con existencia":drivers?"✅ Regresos OK":"🛖 Entradas"; $("#entryMetricHelp").textContent=inventory?"artículos disponibles":drivers?"registros sin incidencia":"ingresos al sistema";
+  $("#exitMetricLabel").textContent=inventory?"⚠ Sin existencia":drivers?"🧰 Choferes":"🚚 Salidas"; $("#exitMetricHelp").textContent=inventory?"requieren atención":drivers?"conductores registrados":"despachos activos";
+  $("#statusChartTitle").textContent=config.firstChartTitle; $("#reasonChartTitle").textContent=config.secondChartTitle; $("#reasonChartHelp").textContent=inventory?"Por artículos":drivers?"Por registros":"Por piezas";
+  $$('[data-filter]').forEach(label=>{ const key=label.dataset.filter; label.hidden=inventory?!["STOCK"].includes(key):drivers?!["CHOFER","FROM","TO"].includes(key):!["RAZON","MOTIVO","CHOFER","FROM","TO"].includes(key); });
 }
 
-function populateSelects() {
-  ["RAZON", "MOTIVO", "CHOFER"].forEach(key => {
-    const select = $(`[name="${key}"]`); const current = select.value;
-    const values = [...new Set(state.sectionRows.map(row => row[key]).filter(Boolean))].sort();
-    select.innerHTML = `<option value="">${key === "RAZON" ? "Todas" : "Todos"}</option>` + values.map(value => `<option value="${escapeHtml(value)}">${escapeHtml(value)}</option>`).join("");
-    select.value = values.includes(current) ? current : "";
-  });
+function setView(view,{silent=false}={}){ state.view=view; state.filters={}; $("#advancedForm").reset(); $("#quickSearch").value=""; state.sectionRows=view==="INVENTARIO"?state.inventory:state.rows.filter(row=>norm(row.ORIGEN)===view); const url=new URL(location.href); url.searchParams.set("view",view); history.replaceState(null,"",url); updateViewUi(); populateSelects(); applyFilters({silent:true}); if(!silent) notifyAssistant(`${formatNumber(state.sectionRows.length)} registros disponibles en ${viewConfig[view].title}.`,viewConfig[view].title); }
+
+function applyFilters({silent=false}={}){ const quick=norm($("#quickSearch").value); const {text="",from="",to="",RAZON="",MOTIVO="",CHOFER="",STOCK=""}=state.filters; state.filtered=state.sectionRows.filter(row=>{ const allText=Object.values(row).join(" "); const stockOk=!STOCK||(STOCK==="AVAILABLE"?number(row.STOCK)>0:number(row.STOCK)<=0); return(!quick||norm(allText).includes(quick))&&(!text||norm(allText).includes(norm(text)))&&(!RAZON||row.RAZON===RAZON)&&(!MOTIVO||row.MOTIVO===MOTIVO)&&(!CHOFER||row.CHOFER===CHOFER)&&stockOk&&(!from||row.FECHA>=from)&&(!to||row.FECHA<=to); }); render(); if(!silent&&(quick||Object.values(state.filters).some(Boolean))) notifyAssistant(`Encontré ${formatNumber(state.filtered.length)} resultados con tu búsqueda.`,`Búsqueda en ${viewConfig[state.view].title}`); }
+
+function render(){
+  const rows=state.filtered, drivers=state.view==="REGISTRO", inventory=state.view==="INVENTARIO", config=viewConfig[state.view];
+  $("#movementCount").textContent=formatNumber(rows.length); $("#pieceCount").textContent=formatNumber(sum(rows,inventory?"STOCK":"PIEZAS"));
+  $("#entryCount").textContent=formatNumber(inventory?rows.filter(r=>number(r.STOCK)>0).length:drivers?rows.filter(r=>norm(r.REGRESO)==="OK").length:rows.filter(r=>norm(r.RAZON)==="ENTRADA").length);
+  $("#exitCount").textContent=formatNumber(inventory?rows.filter(r=>number(r.STOCK)<=0).length:drivers?new Set(rows.map(r=>r.CHOFER).filter(Boolean)).size:rows.filter(r=>norm(r.RAZON)==="SALIDA").length);
+  $("#statusTotal").textContent=`${formatNumber(rows.length)} registros`; renderBars("#statusBars",grouped(rows,config.firstChart,drivers)); renderBars("#reasonBars",grouped(rows,config.secondChart,drivers));
+  $("#tableHead").innerHTML=`<tr>${config.columns.map(column=>`<th>${labels[column]}</th>`).join("")}</tr>`;
+  $("#tableBody").innerHTML=rows.map(row=>`<tr>${config.columns.map(column=>`<td>${column==="FECHA"?formatDate(row[column]):column==="ESTADO"?`<span class="stock-pill ${number(row.STOCK)>0?"available":"empty"}">${escapeHtml(row[column])}</span>`:escapeHtml(row[column]??"—")}</td>`).join("")}</tr>`).join("");
+  $("#recordDescription").textContent=`${formatNumber(rows.length)} de ${formatNumber(state.sectionRows.length)} registros mostrados`; $("#emptyMessage").hidden=rows.length!==0; $("#excelButton").disabled=$("#pdfButton").disabled=rows.length===0;
 }
 
-function updateViewUi() {
-  const drivers = state.view === "REGISTRO";
-  $("#movementsViewButton").classList.toggle("is-active", !drivers);
-  $("#movementsViewButton").setAttribute("aria-pressed", String(!drivers));
-  $("#driversViewButton").classList.toggle("is-active", drivers);
-  $("#driversViewButton").setAttribute("aria-pressed", String(drivers));
-  $("#recordsTitle").textContent = viewConfig[state.view].title;
-  $("#movementMetricLabel").textContent = drivers ? "🚚 Registros de chofer" : "🗺 Movimientos";
-  $("#movementMetricHelp").textContent = drivers ? "entregas registradas" : "registros activos";
-  $("#entryMetricLabel").textContent = drivers ? "✅ Regresos OK" : "🛖 Entradas";
-  $("#entryMetricHelp").textContent = drivers ? "registros sin incidencia" : "ingresos al sistema";
-  $("#exitMetricLabel").textContent = drivers ? "🧰 Choferes" : "🚚 Salidas";
-  $("#exitMetricHelp").textContent = drivers ? "conductores registrados" : "despachos activos";
-  $("#statusChartTitle").textContent = viewConfig[state.view].firstChartTitle;
-  $("#reasonChartTitle").textContent = viewConfig[state.view].secondChartTitle;
-  document.querySelector('[name="RAZON"]').closest("label").hidden = drivers;
-  document.querySelector('[name="MOTIVO"]').closest("label").hidden = drivers;
-}
+async function loadData(){ const button=$("#refreshButton"); button.disabled=true; button.textContent="Actualizando…"; try{ const staticSite=location.hostname.endsWith(".github.io"); let response=staticSite?await fetch(`movimientos.json?at=${Date.now()}`,{cache:"no-store"}):await fetch(`/api/movimientos.json?at=${Date.now()}`,{cache:"no-store"}); let contentType=response.headers.get("content-type")||""; if((!response.ok||!contentType.includes("application/json"))&&!staticSite){ response=await fetch(`movimientos.json?at=${Date.now()}`,{cache:"no-store"}); contentType=response.headers.get("content-type")||""; } if(!response.ok||!contentType.includes("application/json")) throw new Error("No se encontraron datos publicados."); const data=await response.json(); state.rows=Array.isArray(data.movimientos)?data.movimientos:[]; state.inventory=prepareInventory(Array.isArray(data.inventario)?data.inventario:[]); const requested=norm(new URLSearchParams(location.search).get("view")); const initial=["MOVIMIENTOS","INVENTARIO","REGISTRO"].includes(requested)?requested:(!state.rows.some(r=>norm(r.ORIGEN)==="MOVIMIENTOS")&&state.rows.some(r=>norm(r.ORIGEN)==="REGISTRO")?"REGISTRO":state.view); setView(initial,{silent:true}); const updated=data.actualizado?new Date(data.actualizado):null; const valid=updated&&!Number.isNaN(updated.getTime()); $("#lastUpdated").textContent=valid?new Intl.DateTimeFormat("es-MX",{dateStyle:"medium",timeStyle:"short"}).format(updated):"Fecha no disponible"; if(valid) $("#lastUpdated").dateTime=updated.toISOString(); const emptyStock=state.inventory.filter(r=>number(r.STOCK)<=0).length; notifyAssistant(`Datos listos: ${formatNumber(state.rows.length)} movimientos y ${formatNumber(state.inventory.length)} artículos. ${emptyStock} están sin existencia.`,"Actualización completada",true); }catch(error){ $("#recordDescription").textContent=`No fue posible cargar los datos: ${error.message}`; $("#lastUpdated").textContent="Sin conexión con los datos"; notifyAssistant(error.message,"No pude actualizar"); }finally{ button.disabled=false; button.textContent="↻ Actualizar datos"; } }
 
-function setView(view) {
-  state.view = view;
-  state.filters = {};
-  $("#advancedForm").reset();
-  $("#quickSearch").value = "";
-  state.sectionRows = state.rows.filter(row => norm(row.ORIGEN) === view);
-  const url = new URL(window.location.href); url.searchParams.set("view", view); history.replaceState(null, "", url);
-  updateViewUi(); populateSelects(); applyFilters();
-}
+function downloadBlob(blob,name){ const url=URL.createObjectURL(blob); const link=document.createElement("a"); link.href=url; link.download=name; document.body.append(link); link.click(); link.remove(); setTimeout(()=>URL.revokeObjectURL(url),1500); }
+function exportExcel(){ const config=viewConfig[state.view]; const headers=config.columns; const rows=state.filtered; const tableRows=[headers,...rows.map(row=>headers.map(key=>key==="FECHA"?formatDate(row[key]):row[key]??""))]; const xml=`<?xml version="1.0"?><Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"><Styles><Style ss:ID="Header"><Font ss:Bold="1" ss:Color="#FFFFFF"/><Interior ss:Color="#26763A" ss:Pattern="Solid"/></Style></Styles><Worksheet ss:Name="${xmlEscape(config.title.slice(0,31))}"><Table>${tableRows.map((row,index)=>`<Row>${row.map(value=>`<Cell${index===0?' ss:StyleID="Header"':''}><Data ss:Type="${typeof value==="number"?"Number":"String"}">${xmlEscape(value)}</Data></Cell>`).join("")}</Row>`).join("")}</Table></Worksheet></Workbook>`; downloadBlob(new Blob([xml],{type:"application/vnd.ms-excel;charset=utf-8"}),`TAPAS-${state.view.toLowerCase()}-${new Date().toISOString().slice(0,10)}.xls`); notifyAssistant(`Guardé ${rows.length} resultados en un archivo compatible con Excel.`,"Excel preparado",true); }
+function exportPdf(){ const config=viewConfig[state.view]; const rows=state.filtered; const popup=window.open("","_blank","width=1100,height=760"); if(!popup){ notifyAssistant("El navegador bloqueó la ventana. Permite ventanas emergentes e inténtalo otra vez.","No pude abrir el PDF"); return; } const head=config.columns.map(c=>`<th>${labels[c]}</th>`).join(""); const body=rows.map(row=>`<tr>${config.columns.map(c=>`<td>${c==="FECHA"?formatDate(row[c]):escapeHtml(row[c]??"—")}</td>`).join("")}</tr>`).join(""); popup.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>TAPAS · ${escapeHtml(config.title)}</title><style>@page{size:landscape;margin:12mm}body{font:11px Arial;color:#222}h1{margin:0 0 4px}p{margin:0 0 14px;color:#555}table{width:100%;border-collapse:collapse}th{background:#26763a;color:white;text-align:left}th,td{padding:6px;border:1px solid #bbb}tr:nth-child(even){background:#f3f7ef}</style></head><body><h1>TAPAS · ${escapeHtml(config.title)}</h1><p>${rows.length} resultados · ${new Date().toLocaleString("es-MX")}</p><table><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table><script>window.onload=()=>setTimeout(()=>window.print(),250)<\/script></body></html>`); popup.document.close(); notifyAssistant("Se abrió la vista de impresión. Elige “Guardar como PDF”.","PDF preparado",true); }
 
-function applyFilters() {
-  const quick = norm($("#quickSearch").value);
-  const { text = "", from = "", to = "", RAZON = "", MOTIVO = "", CHOFER = "" } = state.filters;
-  state.filtered = state.sectionRows.filter(row => {
-    const allText = Object.values(row).join(" ");
-    return (!quick || norm(allText).includes(quick)) && (!text || norm(allText).includes(norm(text))) &&
-      (!RAZON || row.RAZON === RAZON) && (!MOTIVO || row.MOTIVO === MOTIVO) && (!CHOFER || row.CHOFER === CHOFER) &&
-      (!from || row.FECHA >= from) && (!to || row.FECHA <= to);
-  });
-  render();
-}
-
-function render() {
-  const rows = state.filtered; const drivers = state.view === "REGISTRO"; const config = viewConfig[state.view];
-  $("#movementCount").textContent = formatNumber(rows.length);
-  $("#pieceCount").textContent = formatNumber(sum(rows));
-  $("#entryCount").textContent = formatNumber(drivers ? rows.filter(row => norm(row.REGRESO) === "OK").length : rows.filter(row => norm(row.RAZON) === "ENTRADA").length);
-  $("#exitCount").textContent = formatNumber(drivers ? new Set(rows.map(row => row.CHOFER).filter(Boolean)).size : rows.filter(row => norm(row.RAZON) === "SALIDA").length);
-  $("#statusTotal").textContent = `${formatNumber(rows.length)} registros`;
-  renderBars("#statusBars", grouped(rows, config.firstChart, drivers));
-  renderBars("#reasonBars", grouped(rows, config.secondChart, drivers));
-  $("#tableHead").innerHTML = `<tr>${config.columns.map(column => `<th>${labels[column]}</th>`).join("")}</tr>`;
-  $("#tableBody").innerHTML = rows.map(row => `<tr>${config.columns.map(column => `<td>${column === "FECHA" ? formatDate(row[column]) : escapeHtml(row[column] || "—")}</td>`).join("")}</tr>`).join("");
-  $("#recordDescription").textContent = `${formatNumber(rows.length)} de ${formatNumber(state.sectionRows.length)} registros mostrados`;
-  $("#emptyMessage").hidden = rows.length !== 0;
-}
-
-async function loadData() {
-  const button = $("#refreshButton"); button.disabled = true; button.textContent = "Actualizando…";
-  try {
-    const staticSite = location.hostname.endsWith(".github.io");
-    let response = staticSite ? await fetch(`movimientos.json?at=${Date.now()}`, { cache: "no-store" }) : await fetch(`/api/movimientos.json?at=${Date.now()}`, { cache: "no-store" });
-    let contentType = response.headers.get("content-type") || "";
-    if ((!response.ok || !contentType.includes("application/json")) && !staticSite) { response = await fetch(`movimientos.json?at=${Date.now()}`, { cache: "no-store" }); contentType = response.headers.get("content-type") || ""; }
-    if (!response.ok) throw new Error("No se encontraron datos publicados.");
-    if (!contentType.includes("application/json")) throw new Error("El servidor no entregó datos JSON.");
-    const data = await response.json(); state.rows = Array.isArray(data.movimientos) ? data.movimientos : [];
-    const hasMovements = state.rows.some(row => norm(row.ORIGEN) === "MOVIMIENTOS");
-    const hasDrivers = state.rows.some(row => norm(row.ORIGEN) === "REGISTRO");
-    const requestedView = norm(new URLSearchParams(location.search).get("view"));
-    const initialView = ["MOVIMIENTOS", "REGISTRO"].includes(requestedView) ? requestedView : (!hasMovements && hasDrivers ? "REGISTRO" : state.view);
-    setView(initialView);
-    const updated = data.actualizado ? new Date(data.actualizado) : null; const validUpdated = updated && !Number.isNaN(updated.getTime());
-    $("#lastUpdated").textContent = validUpdated ? new Intl.DateTimeFormat("es-MX", { dateStyle: "medium", timeStyle: "short" }).format(updated) : "Fecha no disponible";
-    if (validUpdated) $("#lastUpdated").dateTime = updated.toISOString();
-  } catch (error) { $("#recordDescription").textContent = `No fue posible cargar los datos: ${error.message}`; $("#lastUpdated").textContent = "Sin conexión con los datos"; }
-  finally { button.disabled = false; button.textContent = "↻ Actualizar datos"; }
-}
-
-$("#movementsViewButton").addEventListener("click", () => setView("MOVIMIENTOS"));
-$("#driversViewButton").addEventListener("click", () => setView("REGISTRO"));
-$("#quickSearch").addEventListener("input", applyFilters); $("#refreshButton").addEventListener("click", loadData);
-function setTheme(theme) { document.body.dataset.theme = theme; $("#themeButton").setAttribute("aria-label", theme === "dark" ? "Activar modo claro" : "Activar modo oscuro"); localStorage.setItem("tapas-theme", theme); }
-setTheme(localStorage.getItem("tapas-theme") || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"));
-$("#themeButton").addEventListener("click", () => setTheme(document.body.dataset.theme === "dark" ? "light" : "dark"));
-$("#advancedButton").addEventListener("click", () => $("#advancedDialog").showModal());
-$("#advancedForm").addEventListener("submit", event => { if (event.submitter?.value === "apply") { state.filters = Object.fromEntries(new FormData(event.currentTarget)); applyFilters(); } });
-$("#clearFilters").addEventListener("click", () => { $("#advancedForm").reset(); state.filters = {}; applyFilters(); });
-
-$("#installButton").addEventListener("click", async () => {
-  if (!deferredInstallPrompt) return;
-  deferredInstallPrompt.prompt();
-  await deferredInstallPrompt.userChoice;
-  deferredInstallPrompt = null;
-  $("#installButton").hidden = true;
-});
-window.addEventListener("beforeinstallprompt", event => {
-  event.preventDefault(); deferredInstallPrompt = event; $("#installButton").hidden = false;
-});
-window.addEventListener("appinstalled", () => { deferredInstallPrompt = null; $("#installButton").hidden = true; });
-if ("serviceWorker" in navigator) window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(() => {}));
-if (window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone) $("#installButton").hidden = true;
+$$('.module-button').forEach(button=>button.addEventListener("click",()=>setView(button.dataset.view)));
+$("#quickSearch").addEventListener("input",()=>applyFilters({silent:true})); $("#refreshButton").addEventListener("click",loadData); $("#excelButton").addEventListener("click",exportExcel); $("#pdfButton").addEventListener("click",exportPdf);
+function setTheme(theme){ document.body.dataset.theme=theme; $("#themeButton").setAttribute("aria-label",theme==="dark"?"Activar modo claro":"Activar modo oscuro"); localStorage.setItem("tapas-theme",theme); }
+setTheme(localStorage.getItem("tapas-theme")||(matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light")); $("#themeButton").addEventListener("click",()=>setTheme(document.body.dataset.theme==="dark"?"light":"dark"));
+$("#advancedButton").addEventListener("click",()=>$("#advancedDialog").showModal()); $("#advancedForm").addEventListener("submit",event=>{ if(event.submitter?.value==="apply"){ state.filters=Object.fromEntries(new FormData(event.currentTarget)); applyFilters(); } }); $("#clearFilters").addEventListener("click",()=>{ $("#advancedForm").reset(); state.filters={}; applyFilters(); });
+$("#assistantButton").addEventListener("click",()=>notifyAssistant(`Estás viendo ${viewConfig[state.view].title}. Usa su búsqueda avanzada o descarga los resultados en PDF o Excel.`,`Soy Lu`)); $("#assistantClose").addEventListener("click",()=>$("#assistantBubble").classList.remove("is-visible"));
+$("#notificationButton").addEventListener("click",async()=>{ if(!("Notification" in window)){ notifyAssistant("Tu navegador no admite notificaciones del sistema, pero seguiré avisándote aquí."); return; } const permission=Notification.permission==="default"?await Notification.requestPermission():Notification.permission; notifyAssistant(permission==="granted"?"Las notificaciones del sistema quedaron activadas.":"Seguiré usando mensajes dentro del dashboard.","Notificaciones",permission==="granted"); });
+$("#installButton").addEventListener("click",async()=>{ if(!deferredInstallPrompt)return; deferredInstallPrompt.prompt(); await deferredInstallPrompt.userChoice; deferredInstallPrompt=null; $("#installButton").hidden=true; }); window.addEventListener("beforeinstallprompt",event=>{ event.preventDefault(); deferredInstallPrompt=event; $("#installButton").hidden=false; }); window.addEventListener("appinstalled",()=>{ deferredInstallPrompt=null; $("#installButton").hidden=true; notifyAssistant("La app quedó instalada correctamente.","Instalación completada",true); });
+if("serviceWorker" in navigator) window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{})); if(matchMedia("(display-mode:standalone)").matches||navigator.standalone) $("#installButton").hidden=true;
 loadData();

@@ -1,7 +1,7 @@
 {
-  "actualizado": "2026-08-21T16:25:23-06:00",
+  "actualizado": "2026-08-21T17:55:10-06:00",
   "archivo": "TAPAS.xlsm",
-  "hoja": "MOVIMIENTOS + REGISTRO",
+  "hoja": "MOVIMIENTOS + INVENTARIO + REGISTRO",
   "total_movimientos": 9,
   "total_piezas": 15,
   "movimientos": [
@@ -17,6 +17,7 @@
       "KILOMETRAJE": "19045",
       "REGRESO": "OK",
       "TAPAS": "COMPLET",
+      "STOCK": "",
       "ORIGEN": "REGISTRO"
     },
     {
@@ -31,6 +32,7 @@
       "KILOMETRAJE": "137114",
       "REGRESO": "OK",
       "TAPAS": "COMPLET",
+      "STOCK": "",
       "ORIGEN": "REGISTRO"
     },
     {
@@ -45,6 +47,7 @@
       "KILOMETRAJE": "N/A",
       "REGRESO": "OK",
       "TAPAS": "COMPLET",
+      "STOCK": "",
       "ORIGEN": "REGISTRO"
     },
     {
@@ -59,6 +62,7 @@
       "KILOMETRAJE": "19045",
       "REGRESO": "OK",
       "TAPAS": "COMPLET",
+      "STOCK": "",
       "ORIGEN": "REGISTRO"
     },
     {
@@ -73,6 +77,7 @@
       "KILOMETRAJE": "N/A",
       "REGRESO": "OK",
       "TAPAS": "COMPLET",
+      "STOCK": "",
       "ORIGEN": "REGISTRO"
     },
     {
@@ -87,6 +92,7 @@
       "KILOMETRAJE": "137114",
       "REGRESO": "OK",
       "TAPAS": "COMPLET",
+      "STOCK": "",
       "ORIGEN": "REGISTRO"
     },
     {
@@ -101,6 +107,7 @@
       "KILOMETRAJE": "19045",
       "REGRESO": "OK",
       "TAPAS": "COMPLET",
+      "STOCK": "",
       "ORIGEN": "REGISTRO"
     },
     {
@@ -115,6 +122,7 @@
       "KILOMETRAJE": "137114",
       "REGRESO": "OK",
       "TAPAS": "COMPLET",
+      "STOCK": "",
       "ORIGEN": "REGISTRO"
     },
     {
@@ -129,7 +137,115 @@
       "KILOMETRAJE": "137114",
       "REGRESO": "OK",
       "TAPAS": "COMPLET",
+      "STOCK": "",
       "ORIGEN": "REGISTRO"
+    }
+  ],
+  "inventario": [
+    {
+      "CODIGO": "TAP05",
+      "DESCRIPCION": "TAPA VERDE 5MM 1.22X2.44",
+      "STOCK": 0
+    },
+    {
+      "CODIGO": "TAP09",
+      "DESCRIPCION": "TAPA VERDE 9MM 1.22X2.44",
+      "STOCK": 0
+    },
+    {
+      "CODIGO": "TAP12",
+      "DESCRIPCION": "TAPA VERDE 12MM 1.22X2.44",
+      "STOCK": 0
+    },
+    {
+      "CODIGO": "TAP15",
+      "DESCRIPCION": "TAPA VERDE 15MM 1.22X2.44",
+      "STOCK": 0
+    },
+    {
+      "CODIGO": "TAP16",
+      "DESCRIPCION": "TAPA VERDE 16MM 1.22X2.44",
+      "STOCK": 0
+    },
+    {
+      "CODIGO": "TAP18",
+      "DESCRIPCION": "TAPA VERDE 18MM 1.22X2.44",
+      "STOCK": 0
+    },
+    {
+      "CODIGO": "TAP25",
+      "DESCRIPCION": "TAPA VERDE 25MM 1.22X2.44",
+      "STOCK": 0
+    },
+    {
+      "CODIGO": "TAP30",
+      "DESCRIPCION": "TAPA VERDE 30MM 1.22X2.44",
+      "STOCK": 0
+    },
+    {
+      "CODIGO": "TAN05",
+      "DESCRIPCION": "TAPA NEGRA 5MM 1.22X2.44",
+      "STOCK": 0
+    },
+    {
+      "CODIGO": "TAN09",
+      "DESCRIPCION": "TAPA NEGRA 9MM 1.22X2.45",
+      "STOCK": 0
+    },
+    {
+      "CODIGO": "TAN12",
+      "DESCRIPCION": "TAPA NEGRA 12MM 1.22X2.46",
+      "STOCK": 0
+    },
+    {
+      "CODIGO": "TAN15",
+      "DESCRIPCION": "TAPA NEGRA 15MM 1.22X2.47",
+      "STOCK": 0
+    },
+    {
+      "CODIGO": "TAN16",
+      "DESCRIPCION": "TAPA NEGRA 16MM 1.22X2.48",
+      "STOCK": 0
+    },
+    {
+      "CODIGO": "TAN18",
+      "DESCRIPCION": "TAPA NEGRA 18MM 1.22X2.49",
+      "STOCK": 0
+    },
+    {
+      "CODIGO": "TAN25",
+      "DESCRIPCION": "TAPA NEGRA 25MM 1.22X2.50",
+      "STOCK": 0
+    },
+    {
+      "CODIGO": "TAN30",
+      "DESCRIPCION": "TAPA NEGRA 30MM 1.22X2.51",
+      "STOCK": 0
+    },
+    {
+      "CODIGO": "TACON",
+      "DESCRIPCION": "TACON 1.30X2.50",
+      "STOCK": 0
+    },
+    {
+      "CODIGO": "VSTAP15",
+      "DESCRIPCION": "TAPA VESTO 15MM 1.83X2.50",
+      "STOCK": 0
+    },
+    {
+      "CODIGO": "VSTAP18",
+      "DESCRIPCION": "TAPA VESTO 18MM 1.83X2.51",
+      "STOCK": 0
+    },
+    {
+      "CODIGO": "VSTAP25",
+      "DESCRIPCION": "TAPA VESTO 25MM 1.83X2.52",
+      "STOCK": 0
+    },
+    {
+      "CODIGO": "VSTAP30",
+      "DESCRIPCION": "TAPA VESTO 30MM 1.83X2.53",
+      "STOCK": 0
     }
   ]
 }
