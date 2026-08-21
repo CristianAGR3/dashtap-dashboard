@@ -1,4 +1,5 @@
 const state = { rows: [], sectionRows: [], filtered: [], filters: {}, view: "MOVIMIENTOS" };
+let deferredInstallPrompt = null;
 const viewConfig = {
   MOVIMIENTOS: {
     title: "Movimientos",
@@ -64,6 +65,7 @@ function setView(view) {
   $("#advancedForm").reset();
   $("#quickSearch").value = "";
   state.sectionRows = state.rows.filter(row => norm(row.ORIGEN) === view);
+  const url = new URL(window.location.href); url.searchParams.set("view", view); history.replaceState(null, "", url);
   updateViewUi(); populateSelects(); applyFilters();
 }
 
@@ -106,7 +108,9 @@ async function loadData() {
     const data = await response.json(); state.rows = Array.isArray(data.movimientos) ? data.movimientos : [];
     const hasMovements = state.rows.some(row => norm(row.ORIGEN) === "MOVIMIENTOS");
     const hasDrivers = state.rows.some(row => norm(row.ORIGEN) === "REGISTRO");
-    setView(!hasMovements && hasDrivers ? "REGISTRO" : state.view);
+    const requestedView = norm(new URLSearchParams(location.search).get("view"));
+    const initialView = ["MOVIMIENTOS", "REGISTRO"].includes(requestedView) ? requestedView : (!hasMovements && hasDrivers ? "REGISTRO" : state.view);
+    setView(initialView);
     const updated = data.actualizado ? new Date(data.actualizado) : null; const validUpdated = updated && !Number.isNaN(updated.getTime());
     $("#lastUpdated").textContent = validUpdated ? new Intl.DateTimeFormat("es-MX", { dateStyle: "medium", timeStyle: "short" }).format(updated) : "Fecha no disponible";
     if (validUpdated) $("#lastUpdated").dateTime = updated.toISOString();
@@ -123,4 +127,18 @@ $("#themeButton").addEventListener("click", () => setTheme(document.body.dataset
 $("#advancedButton").addEventListener("click", () => $("#advancedDialog").showModal());
 $("#advancedForm").addEventListener("submit", event => { if (event.submitter?.value === "apply") { state.filters = Object.fromEntries(new FormData(event.currentTarget)); applyFilters(); } });
 $("#clearFilters").addEventListener("click", () => { $("#advancedForm").reset(); state.filters = {}; applyFilters(); });
+
+$("#installButton").addEventListener("click", async () => {
+  if (!deferredInstallPrompt) return;
+  deferredInstallPrompt.prompt();
+  await deferredInstallPrompt.userChoice;
+  deferredInstallPrompt = null;
+  $("#installButton").hidden = true;
+});
+window.addEventListener("beforeinstallprompt", event => {
+  event.preventDefault(); deferredInstallPrompt = event; $("#installButton").hidden = false;
+});
+window.addEventListener("appinstalled", () => { deferredInstallPrompt = null; $("#installButton").hidden = true; });
+if ("serviceWorker" in navigator) window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(() => {}));
+if (window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone) $("#installButton").hidden = true;
 loadData();

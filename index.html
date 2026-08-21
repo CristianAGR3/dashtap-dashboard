@@ -3,6 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#7b3420" />
+    <meta name="application-name" content="TAPAS" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
+    <link rel="apple-touch-icon" href="icon-192.png" />
     <title>Control de Tapas | Movimientos</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
@@ -20,6 +27,7 @@
             <span><small>ÚLTIMA ACTUALIZACIÓN</small><time id="lastUpdated">Cargando datos…</time></span>
           </div>
           <button class="theme-toggle" id="themeButton" aria-label="Activar modo oscuro" title="Cambiar tema"><span>☀</span><span>☾</span><i></i></button>
+          <button class="button secondary install-button" id="installButton" type="button" hidden>⬇ Instalar app</button>
           <button class="button secondary" id="advancedButton">⌕ Búsqueda avanzada</button>
           <button class="button primary" id="refreshButton">↻ Actualizar datos</button>
         </div>

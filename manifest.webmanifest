@@ -1,0 +1,23 @@
+{
+  "id": "./",
+  "name": "TAPAS - Control operativo",
+  "short_name": "TAPAS",
+  "description": "Dashboard de movimientos, choferes y registros de tapas.",
+  "lang": "es-MX",
+  "start_url": "./?source=pwa",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone"],
+  "orientation": "any",
+  "background_color": "#f28a35",
+  "theme_color": "#7b3420",
+  "prefer_related_applications": false,
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Movimientos", "short_name": "Movimientos", "url": "./?view=MOVIMIENTOS&source=pwa", "icons": [{ "src": "icon-192.png", "sizes": "192x192", "type": "image/png" }] },
+    { "name": "Chofer y registro", "short_name": "Chofer", "url": "./?view=REGISTRO&source=pwa", "icons": [{ "src": "icon-192.png", "sizes": "192x192", "type": "image/png" }] }
+  ]
+}
