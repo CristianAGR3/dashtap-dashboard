@@ -97,3 +97,84 @@ th { border-bottom:3px solid var(--anime-ink); } td { border-top:2px dashed #a58
 [data-theme="dark"] .anime-tag { color:#fff; background:#6f2ba0; border-color:#07050d; }
 [data-theme="dark"] .quick-search { background:#f7f4ff; }
 @keyframes anime-float { 50% { transform:translateY(-12px) rotate(12deg) scale(1.08); } }
+
+/* Light aura: Broly-inspired energy */
+body:not([data-theme="dark"]) {
+  --anime-ink:#1d1730;
+  --anime-pink:#7b3ff2;
+  --anime-cyan:#38f29a;
+  --anime-yellow:#dfff3f;
+  --anime-violet:#7240aa;
+  --anime-shadow:#20132e;
+  background:
+    radial-gradient(circle at 86% 9%,#d9ff40 0 9%,transparent 9.5%),
+    radial-gradient(circle at 7% 88%,#61ffb5 0 8%,transparent 8.5%),
+    repeating-conic-gradient(from 210deg at 50% 48%,#80ffb015 0 3deg,transparent 3deg 10deg),
+    linear-gradient(135deg,#f8ffe8 0%,#efffd1 43%,#e8fff3 72%,#f0e7ff 100%);
+}
+body:not([data-theme="dark"])::before {
+  opacity:.52;
+  background:repeating-radial-gradient(circle at 50% 44%,transparent 0 60px,#a9ff5970 61px 63px);
+}
+body:not([data-theme="dark"]) .hero::after { background:linear-gradient(90deg,#73f04d 0 36%,#dfff3f 36% 68%,#7c42c2 68%); }
+body:not([data-theme="dark"]) .hero h1 { text-shadow:3px 3px 0 #fff,6px 6px 0 #6cff71; }
+body:not([data-theme="dark"]) .hero h1 em { color:#60c928; text-shadow:2px 2px 0 #fff,5px 5px 0 #422154; }
+body:not([data-theme="dark"]) .jp-kicker { color:#6d28a7; }
+body:not([data-theme="dark"]) .anime-tag { background:#dfff3f; box-shadow:2px 2px 0 #41204f; }
+body:not([data-theme="dark"]) .button { background:linear-gradient(135deg,#5e2293,#9946d7); }
+body:not([data-theme="dark"]) .primary { color:#1d2914; background:linear-gradient(135deg,#dfff3f,#65ee72); }
+body:not([data-theme="dark"]) .theme-toggle { background:linear-gradient(135deg,#68f27f,#7b3fc0); }
+body:not([data-theme="dark"]) .view-button.is-active { background:linear-gradient(125deg,#dfff3f,#71f17f 55%,#d7a8ff); box-shadow:6px 6px 0 #70e33e,9px 9px 0 #281337; }
+body:not([data-theme="dark"]) .metric { border-top-color:#70ee62; }
+body:not([data-theme="dark"]) .metric:nth-child(2) { border-top-color:#dfff3f; }
+body:not([data-theme="dark"]) .metric:nth-child(3) { border-top-color:#8e4bd0; }
+body:not([data-theme="dark"]) .metric:nth-child(4) { border-top-color:#43da98; }
+body:not([data-theme="dark"]) .metric::after { background:repeating-conic-gradient(#86f23d 0 10deg,transparent 10deg 20deg); }
+body:not([data-theme="dark"]) .metric strong { text-shadow:2px 2px 0 #caff8b; }
+body:not([data-theme="dark"]) .bar-fill { background:repeating-linear-gradient(135deg,#dfff3f 0 10px,#52e87b 10px 20px); }
+body:not([data-theme="dark"]) .bar-row:nth-child(2) .bar-fill { background:repeating-linear-gradient(135deg,#8d47cd 0 10px,#c78aff 10px 20px); }
+body:not([data-theme="dark"]) .bar-row:nth-child(3) .bar-fill { background:repeating-linear-gradient(135deg,#47efac 0 10px,#dfff3f 10px 20px); }
+
+/* Dark aura: Madara-inspired crimson night */
+body[data-theme="dark"] {
+  --anime-ink:#f9edf0;
+  --anime-pink:#ff294d;
+  --anime-cyan:#8896ff;
+  --anime-yellow:#f5b63e;
+  --anime-violet:#99283d;
+  --anime-shadow:#030307;
+  background:
+    radial-gradient(circle at 87% 10%,transparent 0 3.5%,#d7193e 3.7% 5%,#1a050b 5.2% 6.6%,#a5102d 6.8% 8.4%,transparent 8.6%),
+    radial-gradient(circle at 8% 90%,#55101f 0 7%,transparent 7.5%),
+    repeating-conic-gradient(from 35deg at 72% 25%,#e6294812 0 4deg,transparent 4deg 13deg),
+    linear-gradient(135deg,#07070d 0%,#17070d 46%,#0c1226 78%,#020205 100%);
+}
+body[data-theme="dark"]::before {
+  opacity:.32;
+  background:repeating-radial-gradient(circle at 86% 10%,transparent 0 52px,#d8203b88 54px 56px);
+}
+body[data-theme="dark"] .page-shell::before,body[data-theme="dark"] .page-shell::after { color:#e11d3f; filter:drop-shadow(5px 5px 0 #111936); }
+body[data-theme="dark"] .hero { border-bottom-color:#c4203d; }
+body[data-theme="dark"] .hero::after { background:linear-gradient(90deg,#e11d3f 0 44%,#5b1725 44% 72%,#7580e8 72%); }
+body[data-theme="dark"] .hero h1 { color:#fff7f8; text-shadow:3px 3px 0 #080208,6px 6px 0 #c61836; }
+body[data-theme="dark"] .hero h1 em { color:#ee2948; text-shadow:2px 2px 0 #13050a,5px 5px 0 #6d789e; }
+body[data-theme="dark"] .eyebrow,body[data-theme="dark"] .jp-kicker { color:#ff647e; }
+body[data-theme="dark"] .anime-tag { color:#fff; background:#8f142b; border-color:#030307; box-shadow:2px 2px 0 #e23a54; }
+body[data-theme="dark"] .button { background:linear-gradient(135deg,#721126,#d01d3c); }
+body[data-theme="dark"] .primary { color:#fff; background:linear-gradient(135deg,#b31331,#e94957); border-color:#050307; }
+body[data-theme="dark"] .theme-toggle { background:linear-gradient(135deg,#d21d3b,#30396d); }
+body[data-theme="dark"] .view-button.is-active { background:linear-gradient(125deg,#7e1329,#c6213f 55%,#242c5d); box-shadow:6px 6px 0 #d72645,9px 9px 0 #020204; }
+body[data-theme="dark"] .metric,body[data-theme="dark"] .panel,body[data-theme="dark"] .view-button { background:linear-gradient(145deg,#1a1119f2,#0b0c16f2); border-color:#020204; box-shadow:6px 6px 0 #020204,inset 0 0 0 2px #d8405520; }
+body[data-theme="dark"] .metric { border-top-color:#d92040; }
+body[data-theme="dark"] .metric:nth-child(2) { border-top-color:#772033; }
+body[data-theme="dark"] .metric:nth-child(3) { border-top-color:#6b75cf; }
+body[data-theme="dark"] .metric:nth-child(4) { border-top-color:#f04b5f; }
+body[data-theme="dark"] .metric::after { background:repeating-conic-gradient(#dc1e3c 0 10deg,transparent 10deg 20deg); opacity:.2; }
+body[data-theme="dark"] .metric span,body[data-theme="dark"] th { color:#ff9bac; }
+body[data-theme="dark"] .metric strong { text-shadow:2px 2px 0 #701225; }
+body[data-theme="dark"] .bar-track { background:#171220; border-color:#050307; }
+body[data-theme="dark"] .bar-fill { background:repeating-linear-gradient(135deg,#df1f3f 0 10px,#751125 10px 20px); }
+body[data-theme="dark"] .bar-row:nth-child(2) .bar-fill { background:repeating-linear-gradient(135deg,#6c76d6 0 10px,#2d356f 10px 20px); }
+body[data-theme="dark"] .bar-row:nth-child(3) .bar-fill { background:repeating-linear-gradient(135deg,#f0465e 0 10px,#8e172e 10px 20px); }
+body[data-theme="dark"] td { border-top-color:#723241; }
+body[data-theme="dark"] tbody tr:hover { background:#d9204020; }
